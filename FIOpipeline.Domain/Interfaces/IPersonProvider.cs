@@ -8,6 +8,6 @@ namespace FIOpipeline.Domain.Interfaces
 {
     public interface IPersonProvider
     {
-        IEnumerable<string> Validate(Person person);
+        Task<(bool Success, IEnumerable<string> Errors)> ValidatePerson(Person person);
     }
 }

@@ -1,6 +1,8 @@
 using FIOpipeline.Core;
+using FIOpipeline.Core.DataAccess;
 using FIOpipeline.Core.Providers;
 using FIOpipeline.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,10 @@ builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<IPersonProvider, PersonProvider>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 
 var app = builder.Build();
 

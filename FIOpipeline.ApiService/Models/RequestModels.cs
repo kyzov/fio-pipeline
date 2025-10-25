@@ -11,7 +11,7 @@ namespace FIOpipeline.ApiService.Models
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public DateTime BirthdayDate { get; set; }
-        public Sex Sex { get; set; }
+        public string Sex { get; set; }
         public Address Address { get; set; }
         public Phone Phone { get; set; }
         public Email Email { get; set; }
