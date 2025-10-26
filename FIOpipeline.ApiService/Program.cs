@@ -14,6 +14,7 @@ builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<IPersonProvider, PersonProvider>();
+builder.Services.AddScoped<IDeduplicationProvider, DeduplicationProvider>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 

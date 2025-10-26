@@ -13,33 +13,53 @@ namespace FIOpipeline.Core.Providers
     public class PersonProvider : IPersonProvider
     {
         private readonly AppDbContext _dbContext;
+        private readonly IDeduplicationProvider _deduplicationProvider;
 
-        public PersonProvider(AppDbContext dbContext)
+        public PersonProvider(AppDbContext dbContext, IDeduplicationProvider deduplicationProvider)
         {
             _dbContext = dbContext;
+            _deduplicationProvider = deduplicationProvider;
         }
 
-        public async Task<(bool Success, IEnumerable<string> Errors)> ValidatePerson(Person person)
+        public async Task<(bool Success, IEnumerable<string> Errors, int? PersonId)> ValidatePerson(Person person)
         {
             var errors = Validate(person).ToList();
 
             if (errors.Any())
             {
-                return (false, errors);
+                return (false, errors, null);
             }
 
             try
             {
-                await SavePersonAsync(person);
-                return (true, Enumerable.Empty<string>());
+                var duplicateGroups = await _deduplicationProvider.FindPotentialDuplicatesAsync(person);
+
+                if (duplicateGroups.Any())
+                {
+                    // Проверяем, является ли запись полным дубликатом
+                    if (await _deduplicationProvider.IsExactDuplicateAsync(person, duplicateGroups.First()))
+                    {
+                        errors.Add("Пользователь с такими данными уже существует.");
+                        return (false, errors, null);
+                    }
+                    else
+                    {
+                        // Объединяем только если есть новые данные
+                        var mergeResult = await _deduplicationProvider.MergeWithExistingAsync(person, duplicateGroups);
+                        return (true, new List<string> { "Данные объединены с существующей записью." }, mergeResult.PersonId);
+                    }
+                }
+
+                var personId = await SavePersonAsync(person);
+                return (true, new List<string> { "Данные успешно сохранены." }, personId);
             }
             catch (Exception ex)
             {
-                return (false, new List<string> { $"Ошибка при сохранении: {ex.Message}" });
+                return (false, new List<string> { $"Ошибка при сохранении: {ex.Message}" }, null);
             }
         }
 
-        public IEnumerable<string> Validate(Person person)
+        private IEnumerable<string> Validate(Person person)
         {
             var errors = new List<string>();
 
@@ -106,7 +126,7 @@ namespace FIOpipeline.Core.Providers
             return errors;
         }
 
-        public async Task SavePersonAsync(Person person)
+        private async Task<int> SavePersonAsync(Person person)
         {
             var efPerson = new Entity.Person
             {
@@ -115,28 +135,17 @@ namespace FIOpipeline.Core.Providers
                 SecondName = person.SecondName,
                 BirthdayDate = DateTime.SpecifyKind(person.BirthdayDate, DateTimeKind.Utc),
                 Sex = person.Sex.ToString(),
-                Addresses = person.Addresses.Select(a => new Entity.Address
-                {
-                    Value = a.Value
-                }).ToList(),
-
-                // Коллекции телефонов
-                Phones = person.Phones.Select(p => new Entity.Phone
-                {
-                    Value = p.Value
-                }).ToList(),
-
-                // Коллекции email
-                Emails = person.Emails.Select(e => new Entity.Email
-                {
-                    Value = e.Value
-                }).ToList()
+                Addresses = person.Addresses.Select(a => new Entity.Address { Value = a.Value }).ToList(),
+                Phones = person.Phones.Select(p => new Entity.Phone { Value = p.Value }).ToList(),
+                Emails = person.Emails.Select(e => new Entity.Email { Value = e.Value }).ToList()
             };
 
             _dbContext.Persons.Add(efPerson);
             await _dbContext.SaveChangesAsync();
+
+            return efPerson.Id; // Возвращаем ID созданной записи
         }
- 
+
     }
 
 }

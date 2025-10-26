@@ -40,16 +40,22 @@ public class PersonController : ControllerBase
             Emails = dto.Emails.Select(e => new Email { Value = e.Value }).ToList()
         };
 
-         var (success, errors) = await _personProvider.ValidatePerson(domainPerson);
+        var (success, errors, personId) = await _personProvider.ValidatePerson(domainPerson);
 
         if (!success)
+        {
             return BadRequest(new
             {
-                Message = "Ошибки валидации",
+                Message = errors.Any(e => e.Contains("дубликат")) ?
+                         "Найдены возможные дубликаты" : "Ошибки валидации",
                 Errors = errors
             });
+        }
 
-        return Ok(new { Message = "Пользователь успешно создан и сохранен в БД" });
+        return Ok(new
+        {
+            Message = errors,
+            PersonId = personId
+        });
     }
 }
-
