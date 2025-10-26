@@ -8,7 +8,7 @@ using System.Xml;
 namespace FIOpipeline.ApiService.Controllers;
 
 [ApiController]
-[Route("api/person")]
+[Route("api/[controller]")]
 public class PersonController : ControllerBase
 {
     private readonly IPersonProvider _personProvider;
@@ -18,7 +18,7 @@ public class PersonController : ControllerBase
         _personProvider = validator;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] PersonDto dto)
     {
         if (dto == null)

@@ -15,10 +15,10 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<IPersonProvider, PersonProvider>();
 builder.Services.AddScoped<IDeduplicationProvider, DeduplicationProvider>();
+builder.Services.AddScoped<IShowcaseProvider, ShowcaseProvider>();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 
 var app = builder.Build();
 
