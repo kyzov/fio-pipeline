@@ -12,8 +12,23 @@ namespace FIOpipeline.ApiService.Models
         public string SecondName { get; set; }
         public DateTime BirthdayDate { get; set; }
         public string Sex { get; set; }
-        public Address Address { get; set; }
-        public Phone Phone { get; set; }
-        public Email Email { get; set; }
+        public List<AddressDto> Addresses { get; set; } = new List<AddressDto>();
+        public List<PhoneDto> Phones { get; set; } = new List<PhoneDto>();
+        public List<EmailDto> Emails { get; set; } = new List<EmailDto>();
+
+        public class AddressDto
+        {
+            public string Value { get; set; }
+        }
+
+        public class PhoneDto
+        {
+            public string Value { get; set; }
+        }
+
+        public class EmailDto
+        {
+            public string Value { get; set; }
+        }
     }
 }

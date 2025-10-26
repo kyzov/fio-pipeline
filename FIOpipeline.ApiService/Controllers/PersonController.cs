@@ -35,12 +35,12 @@ public class PersonController : ControllerBase
             SecondName = dto.SecondName,
             BirthdayDate = dto.BirthdayDate,
             Sex = sex,
-            Address = new Address { Value = dto.Address.Value },
-            Phone = new Phone { Value = dto.Phone.Value },
-            Email = new Email { Value = dto.Email.Value }
+            Addresses = dto.Addresses.Select(a => new Address { Value = a.Value }).ToList(),
+            Phones = dto.Phones.Select(p => new Phone { Value = p.Value }).ToList(),
+            Emails = dto.Emails.Select(e => new Email { Value = e.Value }).ToList()
         };
 
-        var (success, errors) = await _personProvider.ValidatePerson(domainPerson);
+         var (success, errors) = await _personProvider.ValidatePerson(domainPerson);
 
         if (!success)
             return BadRequest(new

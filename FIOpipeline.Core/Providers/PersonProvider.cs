@@ -63,18 +63,45 @@ namespace FIOpipeline.Core.Providers
                 errors.Add("Пол должен быть 'M' или 'F'.");
 
             // Проверка адреса
-            if (string.IsNullOrWhiteSpace(person.Address?.Value))
-                errors.Add("Адрес пустой.");
+            if (person.Addresses == null || !person.Addresses.Any() ||
+                person.Addresses.All(a => string.IsNullOrWhiteSpace(a.Value)))
+                errors.Add("Должен быть указан хотя бы один адрес.");
+            else
+            {
+                foreach (var address in person.Addresses)
+                {
+                    if (string.IsNullOrWhiteSpace(address.Value))
+                        errors.Add("Один из адресов пустой.");
+                }
+            }
 
-            // Телефон
+            // Проверка телефонов
             var phoneRegex = new Regex(@"^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$");
-            if (string.IsNullOrWhiteSpace(person.Phone?.Value) || !phoneRegex.IsMatch(person.Phone.Value))
-                errors.Add("Номер телефона некорректен.");
+            if (person.Phones == null || !person.Phones.Any() ||
+                person.Phones.All(p => string.IsNullOrWhiteSpace(p.Value) || !phoneRegex.IsMatch(p.Value)))
+                errors.Add("Должен быть указан хотя бы один корректный номер телефона.");
+            else
+            {
+                foreach (var phone in person.Phones)
+                {
+                    if (!string.IsNullOrWhiteSpace(phone.Value) && !phoneRegex.IsMatch(phone.Value))
+                        errors.Add($"Номер телефона '{phone.Value}' некорректен.");
+                }
+            }
 
-            // Email:
+            // Проверка email
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            if (string.IsNullOrWhiteSpace(person.Email?.Value) || !emailRegex.IsMatch(person.Email.Value))
-                errors.Add("Email некорректен.");
+            if (person.Emails == null || !person.Emails.Any() ||
+                person.Emails.All(e => string.IsNullOrWhiteSpace(e.Value) || !emailRegex.IsMatch(e.Value)))
+                errors.Add("Должен быть указан хотя бы один корректный email.");
+            else
+            {
+                foreach (var email in person.Emails)
+                {
+                    if (!string.IsNullOrWhiteSpace(email.Value) && !emailRegex.IsMatch(email.Value))
+                        errors.Add($"Email '{email.Value}' некорректен.");
+                }
+            }
 
             return errors;
         }
@@ -88,17 +115,28 @@ namespace FIOpipeline.Core.Providers
                 SecondName = person.SecondName,
                 BirthdayDate = DateTime.SpecifyKind(person.BirthdayDate, DateTimeKind.Utc),
                 Sex = person.Sex.ToString(),
-                Address = new Entity.Address { Value = person.Address.Value },
-                Phone = new Entity.Phone { Value = person.Phone.Value },
-                Email = new Entity.Email { Value = person.Email.Value }
+                Addresses = person.Addresses.Select(a => new Entity.Address
+                {
+                    Value = a.Value
+                }).ToList(),
+
+                // Коллекции телефонов
+                Phones = person.Phones.Select(p => new Entity.Phone
+                {
+                    Value = p.Value
+                }).ToList(),
+
+                // Коллекции email
+                Emails = person.Emails.Select(e => new Entity.Email
+                {
+                    Value = e.Value
+                }).ToList()
             };
 
             _dbContext.Persons.Add(efPerson);
             await _dbContext.SaveChangesAsync();
         }
-
-
-
+ 
     }
 
 }

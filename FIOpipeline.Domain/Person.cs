@@ -39,10 +39,10 @@ namespace FIOpipeline.Domain
 
         public required Sex Sex { get; set; }
 
-        public required Address Address { get; set; }
+        public required List<Address> Addresses { get; set; } = new List<Address>();
 
-        public required Phone Phone { get; set; }
+        public required List<Phone> Phones { get; set; } = new List<Phone>();
 
-        public required Email Email { get; set; }
+        public required List<Email> Emails { get; set; } = new List<Email>();
     }
 }

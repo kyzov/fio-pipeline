@@ -38,9 +38,9 @@ namespace FIOpipeline.Core.Entity
         public string SecondName { get; set; }
         public DateTime BirthdayDate { get; set; }
         public string Sex { get; set; }
-        public Address Address { get; set; }
-        public Phone Phone { get; set; }
-        public Email Email { get; set; }
+        public List<Address> Addresses { get; set; } = new List<Address>();
+        public List<Phone> Phones { get; set; } = new List<Phone>();
+        public List<Email> Emails { get; set; } = new List<Email>();
     }
 
 }
