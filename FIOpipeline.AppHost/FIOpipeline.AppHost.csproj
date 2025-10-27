@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FIOpipeline.ApiService\FIOpipeline.ApiService.csproj" />
-    <ProjectReference Include="..\FIOpipeline.Web\FIOpipeline.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

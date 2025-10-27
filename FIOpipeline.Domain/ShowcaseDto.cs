@@ -21,4 +21,10 @@
         public string? Phone { get; set; }
         public string? Email { get; set; }
     }
+    public class SearchResponse
+    {
+        public string Message { get; set; }
+        public int TotalCount { get; set; }
+        public List<ShowcaseDto> Results { get; set; }
+    }
 }
