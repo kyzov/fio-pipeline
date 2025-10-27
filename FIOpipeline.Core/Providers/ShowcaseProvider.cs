@@ -30,17 +30,14 @@ namespace FIOpipeline.Core.Providers
                 .Include(p => p.Emails)
                 .AsQueryable();
 
-            // Поиск по ЛЮБОМУ из критериев (OR логика)
             var hasSearchCriteria = false;
 
-            // i. фамилия
             if (!string.IsNullOrEmpty(request.LastName))
             {
                 query = query.Where(p => p.LastName.Contains(request.LastName));
                 hasSearchCriteria = true;
             }
 
-            // ii. фамилия и имя (дополнительный критерий)
             if (!string.IsNullOrEmpty(request.LastName) && !string.IsNullOrEmpty(request.FirstName))
             {
                 query = query.Where(p => p.LastName.Contains(request.LastName) &&
@@ -48,7 +45,6 @@ namespace FIOpipeline.Core.Providers
                 hasSearchCriteria = true;
             }
 
-            // iii. ФИО (дополнительный критерий)
             if (!string.IsNullOrEmpty(request.LastName) &&
                 !string.IsNullOrEmpty(request.FirstName) &&
                 !string.IsNullOrEmpty(request.SecondName))
@@ -59,35 +55,31 @@ namespace FIOpipeline.Core.Providers
                 hasSearchCriteria = true;
             }
 
-            // iv. адрес
             if (!string.IsNullOrEmpty(request.Address))
             {
                 query = query.Where(p => p.Addresses.Any(a => a.Value.Contains(request.Address)));
                 hasSearchCriteria = true;
             }
 
-            // v. номер телефона
             if (!string.IsNullOrEmpty(request.Phone))
             {
                 query = query.Where(p => p.Phones.Any(ph => ph.Value.Contains(request.Phone)));
                 hasSearchCriteria = true;
             }
 
-            // vi. адрес электронной почты
             if (!string.IsNullOrEmpty(request.Email))
             {
                 query = query.Where(p => p.Emails.Any(e => e.Value.Contains(request.Email)));
                 hasSearchCriteria = true;
             }
 
-            // Если нет критериев поиска - возвращаем пустой список
             if (!hasSearchCriteria)
                 return new List<Entity.Person>();
 
             return await query.ToListAsync();
         }
 
-        private ShowcaseDto MapToShowcaseDto(Entity.Person person) // Person теперь Core.Entity.Person
+        private ShowcaseDto MapToShowcaseDto(Entity.Person person)
         {
             return new ShowcaseDto
             {

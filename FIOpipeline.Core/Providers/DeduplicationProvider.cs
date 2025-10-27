@@ -41,7 +41,6 @@ namespace FIOpipeline.Core.Providers
             return potentialDuplicates;
         }
 
-        // В классе DeduplicationService добавьте метод:
         public async Task<MergeResult> MergeWithExistingAsync(Domain.Person newPerson, List<PersonGroup> duplicateGroups)
         {
             if (duplicateGroups == null || !duplicateGroups.Any())
@@ -49,11 +48,9 @@ namespace FIOpipeline.Core.Providers
                 return new MergeResult { Success = false, Message = "Нет дубликатов для объединения" };
             }
 
-            // Берем первую группу дубликатов (самый подходящий вариант)
             var primaryGroup = duplicateGroups.First();
             var primaryPersonId = primaryGroup.PrimaryPersonId;
 
-            // Получаем основную персону из БД
             var primaryPerson = await _context.Persons
                 .Include(p => p.Addresses)
                 .Include(p => p.Phones)
@@ -65,10 +62,8 @@ namespace FIOpipeline.Core.Providers
                 return new MergeResult { Success = false, Message = "Основная персона не найдена" };
             }
 
-            // Объединяем данные из новой персоны с существующей
             await MergePersonDataAsync(primaryPerson, newPerson);
 
-            // Сохраняем изменения
             await _context.SaveChangesAsync();
 
             return new MergeResult
@@ -81,47 +76,39 @@ namespace FIOpipeline.Core.Providers
 
         private bool ArePotentialDuplicates(Person person1, Person person2)
         {
-            // i. Полное совпадение фамилий (только для мужчин)
             if (person1.Sex == "M" && person2.Sex == "M" &&
                 person1.LastName != person2.LastName)
                 return false;
 
-            // ii. Полное совпадение имён
             if (person1.FirstName != person2.FirstName)
                 return false;
 
-            // iii. Полное совпадение отчеств (при наличии)
             if (!string.IsNullOrEmpty(person1.SecondName) &&
                 !string.IsNullOrEmpty(person2.SecondName) &&
                 person1.SecondName != person2.SecondName)
                 return false;
 
-            // iv. Совпадение пола
             if (person1.Sex != person2.Sex)
                 return false;
 
-            // v. Совпадение хотя бы одного адреса (при наличии)
             var hasAddresses1 = person1.Addresses?.Any() == true;
             var hasAddresses2 = person2.Addresses?.Any() == true;
             var addressMatch = !hasAddresses1 && !hasAddresses2 ||
                               (hasAddresses1 && hasAddresses2 &&
                                person1.Addresses.Any(a1 => person2.Addresses.Any(a2 => a1.Value == a2.Value)));
 
-            // vi. Совпадение хотя бы одного номера телефона (при наличии)
             var hasPhones1 = person1.Phones?.Any() == true;
             var hasPhones2 = person2.Phones?.Any() == true;
             var phoneMatch = !hasPhones1 && !hasPhones2 ||
                             (hasPhones1 && hasPhones2 &&
                              person1.Phones.Any(p1 => person2.Phones.Any(p2 => p1.Value == p2.Value)));
 
-            // vii. Совпадение хотя бы одного email (при наличии)
             var hasEmails1 = person1.Emails?.Any() == true;
             var hasEmails2 = person2.Emails?.Any() == true;
             var emailMatch = !hasEmails1 && !hasEmails2 ||
                             (hasEmails1 && hasEmails2 &&
                              person1.Emails.Any(e1 => person2.Emails.Any(e2 => e1.Value == e2.Value)));
 
-            // Должны совпасть ВСЕ условия
             return addressMatch && phoneMatch && emailMatch;
         }
 
@@ -135,7 +122,6 @@ namespace FIOpipeline.Core.Providers
 
             if (existingPerson == null) return false;
 
-            // Проверяем, что все данные из нового запроса уже есть в существующей записи
             var allAddressesExist = newPerson.Addresses.All(newAddr =>
                 existingPerson.Addresses.Any(existingAddr => existingAddr.Value == newAddr.Value));
 
@@ -145,7 +131,6 @@ namespace FIOpipeline.Core.Providers
             var allEmailsExist = newPerson.Emails.All(newEmail =>
                 existingPerson.Emails.Any(existingEmail => existingEmail.Value == newEmail.Value));
 
-            // Проверяем основные данные
             var basicDataMatch = existingPerson.LastName == newPerson.LastName &&
                                existingPerson.FirstName == newPerson.FirstName &&
                                existingPerson.SecondName == newPerson.SecondName &&
@@ -157,7 +142,6 @@ namespace FIOpipeline.Core.Providers
 
         private async Task MergePersonDataAsync(Core.Entity.Person primaryPerson, Domain.Person newPerson)
         {
-            // Объединяем адреса
             if (newPerson.Addresses != null)
             {
                 foreach (var newAddress in newPerson.Addresses)
@@ -170,7 +154,6 @@ namespace FIOpipeline.Core.Providers
                 }
             }
 
-            // Объединяем телефоны
             if (newPerson.Phones != null)
             {
                 foreach (var newPhone in newPerson.Phones)
@@ -183,7 +166,6 @@ namespace FIOpipeline.Core.Providers
                 }
             }
 
-            // Объединяем email
             if (newPerson.Emails != null)
             {
                 foreach (var newEmail in newPerson.Emails)
@@ -196,13 +178,11 @@ namespace FIOpipeline.Core.Providers
                 }
             }
 
-            // Обновляем основные данные, если они пустые в существующей записи
             if (string.IsNullOrWhiteSpace(primaryPerson.SecondName) && !string.IsNullOrWhiteSpace(newPerson.SecondName))
             {
                 primaryPerson.SecondName = newPerson.SecondName;
             }
 
-            // Можно добавить логику для обновления других полей при необходимости
         }
 
         private Entity.Person MapToEntityPerson(Domain.Person domainPerson)

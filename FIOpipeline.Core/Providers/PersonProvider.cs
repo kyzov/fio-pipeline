@@ -36,7 +36,6 @@ namespace FIOpipeline.Core.Providers
 
                 if (duplicateGroups.Any())
                 {
-                    // Проверяем, является ли запись полным дубликатом
                     if (await _deduplicationProvider.IsExactDuplicateAsync(person, duplicateGroups.First()))
                     {
                         errors.Add("Пользователь с такими данными уже существует.");
@@ -44,7 +43,6 @@ namespace FIOpipeline.Core.Providers
                     }
                     else
                     {
-                        // Объединяем только если есть новые данные
                         var mergeResult = await _deduplicationProvider.MergeWithExistingAsync(person, duplicateGroups);
                         return (true, new List<string> { "Данные объединены с существующей записью." }, mergeResult.PersonId);
                     }
@@ -143,7 +141,7 @@ namespace FIOpipeline.Core.Providers
             _dbContext.Persons.Add(efPerson);
             await _dbContext.SaveChangesAsync();
 
-            return efPerson.Id; // Возвращаем ID созданной записи
+            return efPerson.Id;
         }
 
     }

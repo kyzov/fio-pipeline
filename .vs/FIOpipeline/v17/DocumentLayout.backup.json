@@ -7,6 +7,14 @@
       "RelativeMoniker": "D:0:0:{C64AF8D5-A2F3-D013-359F-4D112A04D878}|FIOpipeline.ApiService\\FIOpipeline.ApiService.csproj|solutionrelative:fiopipeline.apiservice\\controllers\\showcasecontoller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.domain\\interfaces\\ishowcaseprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|solutionrelative:fiopipeline.domain\\interfaces\\ishowcaseprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.domain\\showcasedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|solutionrelative:fiopipeline.domain\\showcasedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C64AF8D5-A2F3-D013-359F-4D112A04D878}|FIOpipeline.ApiService\\FIOpipeline.ApiService.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.apiservice\\controllers\\personcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C64AF8D5-A2F3-D013-359F-4D112A04D878}|FIOpipeline.ApiService\\FIOpipeline.ApiService.csproj|solutionrelative:fiopipeline.apiservice\\controllers\\personcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -19,16 +27,8 @@
       "RelativeMoniker": "D:0:0:{581D76D1-1617-8BC7-308B-331745A484B6}|FIOpipeline.Core\\FIOpipeline.Core.csproj|solutionrelative:fiopipeline.core\\providers\\showcaseprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.domain\\interfaces\\ishowcaseprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|solutionrelative:fiopipeline.domain\\interfaces\\ishowcaseprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C64AF8D5-A2F3-D013-359F-4D112A04D878}|FIOpipeline.ApiService\\FIOpipeline.ApiService.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.apiservice\\models\\personrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C64AF8D5-A2F3-D013-359F-4D112A04D878}|FIOpipeline.ApiService\\FIOpipeline.ApiService.csproj|solutionrelative:fiopipeline.apiservice\\models\\personrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.domain\\showcasedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|solutionrelative:fiopipeline.domain\\showcasedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F484EE43-4492-847F-1A11-6EEF38EC8941}|FIOpipeline.Domain\\FIOpipeline.Domain.csproj|c:\\users\\vladm\\source\\repos\\fio-pipeline\\fiopipeline.domain\\interfaces\\ipersonprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,7 +66,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "PersonController.cs",
               "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.ApiService\\Controllers\\PersonController.cs",
               "RelativeDocumentMoniker": "FIOpipeline.ApiService\\Controllers\\PersonController.cs",
@@ -80,7 +80,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.ApiService\\Program.cs",
               "RelativeDocumentMoniker": "FIOpipeline.ApiService\\Program.cs",
@@ -100,27 +100,14 @@
               "RelativeDocumentMoniker": "FIOpipeline.ApiService\\Controllers\\ShowcaseContoller.cs",
               "ToolTip": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.ApiService\\Controllers\\ShowcaseContoller.cs",
               "RelativeToolTip": "FIOpipeline.ApiService\\Controllers\\ShowcaseContoller.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAADwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T11:04:06.468Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ShowcaseProvider.cs",
-              "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
-              "RelativeDocumentMoniker": "FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
-              "ToolTip": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
-              "RelativeToolTip": "FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAUwHUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T10:55:37.6Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "IShowcaseProvider.cs",
               "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Domain\\Interfaces\\IShowcaseProvider.cs",
               "RelativeDocumentMoniker": "FIOpipeline.Domain\\Interfaces\\IShowcaseProvider.cs",
@@ -133,7 +120,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ShowcaseDto.cs",
+              "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Domain\\ShowcaseDto.cs",
+              "RelativeDocumentMoniker": "FIOpipeline.Domain\\ShowcaseDto.cs",
+              "ToolTip": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Domain\\ShowcaseDto.cs",
+              "RelativeToolTip": "FIOpipeline.Domain\\ShowcaseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T10:53:19.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "ShowcaseProvider.cs",
+              "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
+              "RelativeDocumentMoniker": "FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
+              "ToolTip": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
+              "RelativeToolTip": "FIOpipeline.Core\\Providers\\ShowcaseProvider.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAUwHUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T10:55:37.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "PersonRequestDto.cs",
               "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.ApiService\\Models\\PersonRequestDto.cs",
               "RelativeDocumentMoniker": "FIOpipeline.ApiService\\Models\\PersonRequestDto.cs",
@@ -142,19 +155,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T10:49:57.262Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ShowcaseDto.cs",
-              "DocumentMoniker": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Domain\\ShowcaseDto.cs",
-              "RelativeDocumentMoniker": "FIOpipeline.Domain\\ShowcaseDto.cs",
-              "ToolTip": "C:\\Users\\vladm\\source\\repos\\fio-pipeline\\FIOpipeline.Domain\\ShowcaseDto.cs",
-              "RelativeToolTip": "FIOpipeline.Domain\\ShowcaseDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T10:53:19.797Z",
               "EditorCaption": ""
             },
             {

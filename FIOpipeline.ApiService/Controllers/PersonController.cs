@@ -24,7 +24,6 @@ public class PersonController : ControllerBase
         if (dto == null)
             return BadRequest("DTO is required");
 
-        // Преобразование string в enum
         if (!Enum.TryParse<Sex>(dto.Sex, out var sex))
             return BadRequest("Invalid sex value");
 

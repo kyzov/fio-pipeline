@@ -20,7 +20,7 @@ namespace FIOpipeline.Domain.Interfaces
     public class PersonGroup
     {
         public int PrimaryPersonId { get; set; }
-        public List<Person> Persons { get; set; } = new List<Person>(); // Используем Entity.Person
+        public List<Person> Persons { get; set; } = new List<Person>();
         public int MatchScore { get; set; }
     }
 }
