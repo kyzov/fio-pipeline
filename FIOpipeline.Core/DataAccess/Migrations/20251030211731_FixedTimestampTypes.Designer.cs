@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FIOpipeline.Core.Migrations
+namespace FIOpipeline.Core.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251026090324_FixUniqueIndexes")]
-    partial class FixUniqueIndexes
+    [Migration("20251030211731_FixedTimestampTypes")]
+    partial class FixedTimestampTypes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,17 +33,43 @@ namespace FIOpipeline.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsCurrent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
                     b.Property<int>("PersonId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ValidTo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("'9999-12-31 23:59:59'::timestamp");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<int>("Version")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Id", "ValidFrom");
+
                     b.HasIndex("PersonId");
+
+                    b.HasIndex("ValidFrom");
+
+                    b.HasIndex("ValidTo");
 
                     b.ToTable("Addresses");
                 });
@@ -56,17 +82,43 @@ namespace FIOpipeline.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsCurrent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
                     b.Property<int>("PersonId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ValidTo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("'9999-12-31 23:59:59'::timestamp");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<int>("Version")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Id", "ValidFrom");
+
                     b.HasIndex("PersonId");
+
+                    b.HasIndex("ValidFrom");
+
+                    b.HasIndex("ValidTo");
 
                     b.ToTable("Emails");
                 });
@@ -80,12 +132,17 @@ namespace FIOpipeline.Core.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("BirthdayDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsCurrent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -102,7 +159,30 @@ namespace FIOpipeline.Core.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("character varying(1)");
 
+                    b.Property<DateTime>("ValidFrom")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ValidTo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("'9999-12-31 23:59:59'::timestamp");
+
+                    b.Property<int>("Version")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Id", "ValidFrom");
+
+                    b.HasIndex("IsCurrent");
+
+                    b.HasIndex("ValidFrom");
+
+                    b.HasIndex("ValidTo");
 
                     b.ToTable("Persons");
                 });
@@ -115,17 +195,43 @@ namespace FIOpipeline.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsCurrent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
                     b.Property<int>("PersonId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ValidTo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("'9999-12-31 23:59:59'::timestamp");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<int>("Version")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Id", "ValidFrom");
+
                     b.HasIndex("PersonId");
+
+                    b.HasIndex("ValidFrom");
+
+                    b.HasIndex("ValidTo");
 
                     b.ToTable("Phones");
                 });

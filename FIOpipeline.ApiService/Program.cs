@@ -16,11 +16,20 @@ builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IPersonProvider, PersonProvider>();
 builder.Services.AddScoped<IDeduplicationProvider, DeduplicationProvider>();
 builder.Services.AddScoped<IShowcaseProvider, ShowcaseProvider>();
+builder.Services.AddScoped<ITemporalDataService, TemporalDataService>();
+
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await context.InitializeTemporalData();
+}
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();

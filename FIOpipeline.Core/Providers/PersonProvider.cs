@@ -126,16 +126,49 @@ namespace FIOpipeline.Core.Providers
 
         private async Task<int> SavePersonAsync(Person person)
         {
+            var now = DateTime.Now; // Local time
+            var maxDate = new DateTime(9999, 12, 31, 23, 59, 59);
+
             var efPerson = new Entity.Person
             {
                 LastName = person.LastName,
                 FirstName = person.FirstName,
                 SecondName = person.SecondName,
-                BirthdayDate = DateTime.SpecifyKind(person.BirthdayDate, DateTimeKind.Utc),
+                BirthdayDate = person.BirthdayDate, // Для даты рождения Kind обычно не важен
                 Sex = person.Sex.ToString(),
-                Addresses = person.Addresses.Select(a => new Entity.Address { Value = a.Value }).ToList(),
-                Phones = person.Phones.Select(p => new Entity.Phone { Value = p.Value }).ToList(),
-                Emails = person.Emails.Select(e => new Entity.Email { Value = e.Value }).ToList()
+
+                // Используем UTC время
+                ValidFrom = now,
+                ValidTo = maxDate,
+                IsCurrent = true,
+                Version = 1,
+
+                Addresses = person.Addresses?.Select(a => new Entity.Address
+                {
+                    Value = a.Value,
+                    ValidFrom = now,
+                    ValidTo = maxDate,
+                    IsCurrent = true,
+                    Version = 1
+                }).ToList() ?? new List<Entity.Address>(),
+
+                Phones = person.Phones?.Select(p => new Entity.Phone
+                {
+                    Value = p.Value,
+                    ValidFrom = now,
+                    ValidTo = maxDate,
+                    IsCurrent = true,
+                    Version = 1
+                }).ToList() ?? new List<Entity.Phone>(),
+
+                Emails = person.Emails?.Select(e => new Entity.Email
+                {
+                    Value = e.Value,
+                    ValidFrom = now,
+                    ValidTo = maxDate,
+                    IsCurrent = true,
+                    Version = 1
+                }).ToList() ?? new List<Entity.Email>()
             };
 
             _dbContext.Persons.Add(efPerson);
