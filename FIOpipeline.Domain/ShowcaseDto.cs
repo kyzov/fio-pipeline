@@ -1,6 +1,5 @@
 ﻿namespace FIOpipeline.Domain
 {
-    // FIOpipeline.Domain/ShowcaseDto.cs
     public class ShowcaseDto
     {
         public int PersonId { get; set; }
@@ -11,8 +10,6 @@
         public List<string> Phones { get; set; } = new List<string>();
         public List<string> Emails { get; set; } = new List<string>();
         public int MatchScore { get; set; }
-
-        // Добавьте эти свойства для временных данных
         public DateTime ValidFrom { get; set; }
         public DateTime ValidTo { get; set; }
     }

@@ -8,20 +8,32 @@ namespace FIOpipeline.Domain
 {
     public class PersonHistoryDto
     {
-        public int PersonId { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Action { get; set; }
+        public string Details { get; set; }
+        public PersonSnapshotDto PersonData { get; set; }
+        public List<FieldChangeDto> FieldChanges { get; set; }
+    }
+
+    public class PersonSnapshotDto
+    {
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string SecondName { get; set; }
-        public DateTime ValidFrom { get; set; }
-        public DateTime ValidTo { get; set; }
-        public int Version { get; set; }
-        public bool IsCurrent { get; set; }
+        public DateTime BirthdayDate { get; set; }
+        public string Sex { get; set; }
         public List<string> Addresses { get; set; }
         public List<string> Phones { get; set; }
         public List<string> Emails { get; set; }
     }
 
-    // FIOpipeline.Domain/SystemSnapshotDto.cs
+    public class FieldChangeDto
+    {
+        public string FieldName { get; set; }
+        public string OldValue { get; set; }
+        public string NewValue { get; set; }
+    }
+
     public class SystemSnapshotDto
     {
         public DateTime SnapshotMoment { get; set; }
@@ -29,7 +41,6 @@ namespace FIOpipeline.Domain
         public List<ChangeStatisticDto> RecentChanges { get; set; }
     }
 
-    // FIOpipeline.Domain/ChangeStatisticDto.cs
     public class ChangeStatisticDto
     {
         public DateTime Date { get; set; }

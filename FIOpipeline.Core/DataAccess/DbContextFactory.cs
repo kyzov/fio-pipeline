@@ -14,7 +14,7 @@ namespace FIOpipeline.Core.DataAccess
         public AppDbContext CreateDbContext(string[] args)
         {
             var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../FIOpipeline.ApiService")) // путь к проекту с appsettings.json
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../FIOpipeline.ApiService"))
                 .AddJsonFile("appsettings.json")
                 .Build();
 

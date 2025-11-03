@@ -126,7 +126,7 @@ namespace FIOpipeline.Core.Providers
 
         private async Task<int> SavePersonAsync(Person person)
         {
-            var now = DateTime.Now; // Local time
+            var now = DateTime.Now;
             var maxDate = new DateTime(9999, 12, 31, 23, 59, 59);
 
             var efPerson = new Entity.Person
@@ -134,10 +134,9 @@ namespace FIOpipeline.Core.Providers
                 LastName = person.LastName,
                 FirstName = person.FirstName,
                 SecondName = person.SecondName,
-                BirthdayDate = person.BirthdayDate, // Для даты рождения Kind обычно не важен
+                BirthdayDate = person.BirthdayDate,
                 Sex = person.Sex.ToString(),
 
-                // Используем UTC время
                 ValidFrom = now,
                 ValidTo = maxDate,
                 IsCurrent = true,

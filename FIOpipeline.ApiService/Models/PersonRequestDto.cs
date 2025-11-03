@@ -17,12 +17,10 @@ namespace FIOpipeline.ApiService.Models
         public List<PhoneDto> Phones { get; set; } = new List<PhoneDto>();
         public List<EmailDto> Emails { get; set; } = new List<EmailDto>();
 
-        // Добавляем временные поля (опциональные)
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
     }
 
-    // Обновленные DTO для связанных сущностей
     public class AddressDto
     {
         public string Value { get; set; }

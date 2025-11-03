@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FIOpipeline.Core.Entity;
-using Microsoft.EntityFrameworkCore; // Для CountAsync, ToListAsync и других async методов
-using System.Threading.Tasks;        // Для Task
-using System.Linq;                   // Для LINQ методов
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;        
+using System.Linq;                   
 using System.Collections.Generic;
 
 namespace FIOpipeline.Core.Providers
@@ -32,7 +32,6 @@ namespace FIOpipeline.Core.Providers
                 .Include(p => p.Emails.Where(e => e.ValidFrom <= moment && e.ValidTo > moment))
                 .AsQueryable();
 
-            // Применяем фильтры поиска
             if (!string.IsNullOrEmpty(request.LastName))
                 query = query.Where(p => p.LastName.Contains(request.LastName));
 
@@ -50,32 +49,113 @@ namespace FIOpipeline.Core.Providers
 
             var persons = await query.ToListAsync();
 
-            // Явно указываем пространство имен
             return persons.Select(p => MapToShowcaseDto(p)).ToList();
         }
 
         public async Task<List<PersonHistoryDto>> GetPersonHistoryAsync(int personId)
         {
-            var history = await _context.Persons
+            var history = new List<PersonHistoryDto>();
+
+            var initialPerson = await _context.Persons
                 .Where(p => p.Id == personId)
-                .OrderByDescending(p => p.ValidFrom)
-                .Select(p => new PersonHistoryDto
-                {
-                    PersonId = p.Id,
-                    LastName = p.LastName,
-                    FirstName = p.FirstName,
-                    SecondName = p.SecondName,
-                    ValidFrom = p.ValidFrom,
-                    ValidTo = p.ValidTo,
-                    Version = p.Version,
-                    IsCurrent = p.IsCurrent,
-                    Addresses = p.Addresses.Select(a => a.Value).ToList(),
-                    Phones = p.Phones.Select(ph => ph.Value).ToList(),
-                    Emails = p.Emails.Select(e => e.Value).ToList()
-                })
+                .OrderBy(p => p.ValidFrom)
+                .FirstOrDefaultAsync();
+
+            if (initialPerson == null)
+                return history;
+
+            var initialAddresses = await _context.Addresses
+                .Where(a => a.PersonId == personId && a.ValidFrom == initialPerson.ValidFrom)
                 .ToListAsync();
 
-            return history;
+            var initialPhones = await _context.Phones
+                .Where(p => p.PersonId == personId && p.ValidFrom == initialPerson.ValidFrom)
+                .ToListAsync();
+
+            var initialEmails = await _context.Emails
+                .Where(e => e.PersonId == personId && e.ValidFrom == initialPerson.ValidFrom)
+                .ToListAsync();
+
+
+            if (initialPerson == null)
+                return history;
+
+            history.Add(new PersonHistoryDto
+            {
+                Timestamp = initialPerson.ValidFrom,
+                Action = "Создание пользователя",
+                Details = "Добавлена новая запись",
+                PersonData = new PersonSnapshotDto
+                {
+                    LastName = initialPerson.LastName,
+                    FirstName = initialPerson.FirstName,
+                    SecondName = initialPerson.SecondName,
+                    BirthdayDate = initialPerson.BirthdayDate,
+                    Sex = initialPerson.Sex,
+                    Addresses = initialPerson.Addresses.Select(a => a.Value).ToList(),
+                    Phones = initialPerson.Phones.Select(p => p.Value).ToList(),
+                    Emails = initialPerson.Emails.Select(e => e.Value).ToList()
+                }
+            });
+
+            var addedAddresses = await _context.Addresses
+                .Where(a => a.PersonId == personId && a.ValidFrom > initialPerson.ValidFrom)
+                .OrderBy(a => a.ValidFrom)
+                .ToListAsync();
+
+            foreach (var address in addedAddresses)
+            {
+                history.Add(new PersonHistoryDto
+                {
+                    Timestamp = address.ValidFrom,
+                    Action = "Добавлен адрес",
+                    Details = $"Новый адрес: {address.Value}",
+                    FieldChanges = new List<FieldChangeDto>
+                    {
+                        new FieldChangeDto { FieldName = "Адрес", OldValue = "", NewValue = address.Value }
+                    }
+                });
+            }
+
+            var addedPhones = await _context.Phones
+                .Where(p => p.PersonId == personId && p.ValidFrom > initialPerson.ValidFrom)
+                .OrderBy(p => p.ValidFrom)
+                .ToListAsync();
+
+            foreach (var phone in addedPhones)
+            {
+                history.Add(new PersonHistoryDto
+                {
+                    Timestamp = phone.ValidFrom,
+                    Action = "Добавлен телефон",
+                    Details = $"Новый телефон: {phone.Value}",
+                    FieldChanges = new List<FieldChangeDto>
+            {
+                new FieldChangeDto { FieldName = "Телефон", OldValue = "", NewValue = phone.Value }
+            }
+                });
+            }
+
+            var addedEmails = await _context.Emails
+                .Where(e => e.PersonId == personId && e.ValidFrom > initialPerson.ValidFrom)
+                .OrderBy(e => e.ValidFrom)
+                .ToListAsync();
+
+            foreach (var email in addedEmails)
+            {
+                history.Add(new PersonHistoryDto
+                {
+                    Timestamp = email.ValidFrom,
+                    Action = "Добавлен email",
+                    Details = $"Новый email: {email.Value}",
+                    FieldChanges = new List<FieldChangeDto>
+            {
+                new FieldChangeDto { FieldName = "Email", OldValue = "", NewValue = email.Value }
+            }
+                });
+            }
+
+            return history.OrderBy(h => h.Timestamp).ToList();
         }
 
         public async Task<SystemSnapshotDto> GetSystemSnapshotAsync(DateTime moment)
@@ -115,13 +195,6 @@ namespace FIOpipeline.Core.Providers
                 ValidFrom = person.ValidFrom,
                 ValidTo = person.ValidTo
             };
-        }
-
-        // Реализация RestoreToMomentAsync будет сложнее, зависит от требований
-        public Task<bool> RestoreToMomentAsync(DateTime moment)
-        {
-            // Логика восстановления данных на определенный момент
-            throw new NotImplementedException();
         }
     }
 }

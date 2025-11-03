@@ -24,7 +24,6 @@ namespace FIOpipeline.Core.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            // Конфигурация Person с временными полями
             modelBuilder.Entity<Person>(entity =>
             {
                 entity.HasKey(p => p.Id);
@@ -39,14 +38,12 @@ namespace FIOpipeline.Core.DataAccess
                 entity.Property(p => p.FirstName).IsRequired().HasMaxLength(100);
                 entity.Property(p => p.SecondName).IsRequired().HasMaxLength(100);
 
-                // ДОБАВЬ ЭТУ СТРОКУ - исправит BirthdayDate
                 entity.Property(p => p.BirthdayDate)
                       .IsRequired()
                       .HasColumnType("timestamp without time zone");
 
                 entity.Property(p => p.Sex).IsRequired().HasMaxLength(1);
 
-                // ИЗМЕНЕНО: timestamp without time zone БЕЗ конвертеров
                 entity.Property(p => p.ValidFrom)
                       .IsRequired()
                       .HasColumnType("timestamp without time zone")
@@ -81,7 +78,6 @@ namespace FIOpipeline.Core.DataAccess
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Конфигурация Address с временными полями
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.HasKey(a => a.Id);
@@ -89,7 +85,6 @@ namespace FIOpipeline.Core.DataAccess
                 entity.HasAlternateKey(a => new { a.Id, a.ValidFrom });
                 entity.Property(a => a.Value).IsRequired().HasMaxLength(500);
 
-                // ИЗМЕНЕНО: timestamp without time zone БЕЗ конвертеров
                 entity.Property(a => a.ValidFrom)
                       .IsRequired()
                       .HasColumnType("timestamp without time zone")
@@ -113,7 +108,6 @@ namespace FIOpipeline.Core.DataAccess
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Конфигурация Phone с временными полями
             modelBuilder.Entity<Phone>(entity =>
             {
                 entity.HasKey(p => p.Id);
@@ -121,7 +115,6 @@ namespace FIOpipeline.Core.DataAccess
                 entity.HasAlternateKey(p => new { p.Id, p.ValidFrom });
                 entity.Property(p => p.Value).IsRequired().HasMaxLength(20);
 
-                // ИЗМЕНЕНО: timestamp without time zone БЕЗ конвертеров
                 entity.Property(p => p.ValidFrom)
                       .IsRequired()
                       .HasColumnType("timestamp without time zone")
@@ -145,7 +138,6 @@ namespace FIOpipeline.Core.DataAccess
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Конфигурация Email с временными полями
             modelBuilder.Entity<Email>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -153,7 +145,6 @@ namespace FIOpipeline.Core.DataAccess
                 entity.HasAlternateKey(e => new { e.Id, e.ValidFrom });
                 entity.Property(e => e.Value).IsRequired().HasMaxLength(255);
 
-                // ИЗМЕНЕНО: timestamp without time zone БЕЗ конвертеров
                 entity.Property(e => e.ValidFrom)
                       .IsRequired()
                       .HasColumnType("timestamp without time zone")
@@ -189,7 +180,7 @@ namespace FIOpipeline.Core.DataAccess
 
                 if (entity.ValidFrom == DateTime.MinValue)
                 {
-                    entity.ValidFrom = DateTime.Now; // Local time для without time zone
+                    entity.ValidFrom = DateTime.Now;
                 }
 
                 if (entity.ValidTo == DateTime.MinValue)

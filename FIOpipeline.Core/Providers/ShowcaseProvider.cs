@@ -20,22 +20,6 @@ namespace FIOpipeline.Core.Providers
             if (IsRequestEmpty(request))
                 return new List<ShowcaseDto>();
 
-            // ДИАГНОСТИКА: посмотрим ВСЕ телефоны в базе
-            var allPhones = await _context.Persons
-                .SelectMany(p => p.Phones)
-                .Select(ph => ph.Value)
-                .Distinct()
-                .Take(20)
-                .ToListAsync();
-
-            Console.WriteLine("=== ALL PHONES IN DATABASE ===");
-            foreach (var phone in allPhones)
-            {
-                Console.WriteLine($"Phone: '{phone}'");
-                Console.WriteLine($"Digits only: '{new string(phone.Where(char.IsDigit).ToArray())}'");
-            }
-            Console.WriteLine("=== END PHONES LIST ===");
-
             var persons = await SearchByAnyCriteriaAsync(request);
             return persons.Select(MapToShowcaseDto).ToList();
         }
@@ -48,8 +32,6 @@ namespace FIOpipeline.Core.Providers
                 .Include(p => p.Emails)
                 .AsQueryable();
 
-            // Используем логическое ИЛИ между разными критериями
-            // Человек должен удовлетворять хотя бы одному условию
             var conditions = new List<System.Linq.Expressions.Expression<Func<Entity.Person, bool>>>();
 
             if (!string.IsNullOrEmpty(request.LastName))
@@ -78,7 +60,6 @@ namespace FIOpipeline.Core.Providers
             {
                 var searchPhone = request.Phone.Trim();
 
-                // Простой и надежный поиск по подстроке
                 query = query.Where(p => p.Phones != null && p.Phones.Any(ph =>
                     ph.Value != null && ph.Value.Contains(searchPhone)));
 
@@ -92,7 +73,6 @@ namespace FIOpipeline.Core.Providers
                                                     e.Value.Contains(request.Email)));
             }
 
-            // Объединяем все условия через ИЛИ
             if (conditions.Any())
             {
                 var combinedCondition = conditions[0];
@@ -107,7 +87,6 @@ namespace FIOpipeline.Core.Providers
             return await query.ToListAsync();
         }
 
-        // Метод для комбинирования условий через ИЛИ
         private System.Linq.Expressions.Expression<Func<Entity.Person, bool>> Or(
             System.Linq.Expressions.Expression<Func<Entity.Person, bool>> expr1,
             System.Linq.Expressions.Expression<Func<Entity.Person, bool>> expr2)
