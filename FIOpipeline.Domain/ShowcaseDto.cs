@@ -23,6 +23,7 @@
         public string? Phone { get; set; }
         public string? Email { get; set; }
     }
+
     public class SearchResponse
     {
         public string Message { get; set; }

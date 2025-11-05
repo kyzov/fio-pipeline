@@ -12,7 +12,5 @@ namespace FIOpipeline.Domain.Interfaces
         Task<List<ShowcaseDto>> SearchPersonsAtMomentAsync(ShowcaseSearchRequest request, DateTime moment);
 
         Task<List<PersonHistoryDto>> GetPersonHistoryAsync(int personId);
-
-        Task<SystemSnapshotDto> GetSystemSnapshotAsync(DateTime moment);
     }
 }

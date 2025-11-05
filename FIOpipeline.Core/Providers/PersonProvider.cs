@@ -61,8 +61,8 @@ namespace FIOpipeline.Core.Providers
         {
             var errors = new List<string>();
 
-            // Валидация ФИО
-            var nameRegex = new Regex(@"^[А-ЯЁ][а-яё\-]+$");
+            // Валидация ФИО @"^[А-ЯЁ][а-яё\-]+$"
+            var nameRegex = new Regex(@"^[А-ЯЁ][а-яё]+(-[А-ЯЁ][а-яё]+)?$");
             if (string.IsNullOrWhiteSpace(person.LastName) || !nameRegex.IsMatch(person.LastName))
                 errors.Add("Фамилия некорректна.");
 

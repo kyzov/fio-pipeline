@@ -158,29 +158,6 @@ namespace FIOpipeline.Core.Providers
             return history.OrderBy(h => h.Timestamp).ToList();
         }
 
-        public async Task<SystemSnapshotDto> GetSystemSnapshotAsync(DateTime moment)
-        {
-            var totalPersons = await _context.Persons
-                .CountAsync(p => p.ValidFrom <= moment && p.ValidTo > moment);
-
-            var recentChanges = await _context.Persons
-                .Where(p => p.ValidFrom <= moment && p.ValidFrom >= moment.AddDays(-7))
-                .GroupBy(p => p.ValidFrom.Date)
-                .Select(g => new ChangeStatisticDto
-                {
-                    Date = g.Key,
-                    ChangesCount = g.Count()
-                })
-                .ToListAsync();
-
-            return new SystemSnapshotDto
-            {
-                SnapshotMoment = moment,
-                TotalPersons = totalPersons,
-                RecentChanges = recentChanges
-            };
-        }
-
         private ShowcaseDto MapToShowcaseDto(FIOpipeline.Core.Entity.Person person)
         {
             return new ShowcaseDto

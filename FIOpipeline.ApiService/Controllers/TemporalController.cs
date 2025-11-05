@@ -18,16 +18,18 @@ namespace FIOpipeline.ApiService.Controllers
         [HttpGet("search-at-moment")]
         public async Task<IActionResult> SearchAtMoment(
             [FromQuery] ShowcaseSearchRequest request,
-            [FromQuery] DateTime moment)
+            [FromQuery] DateTime? moment = null)
         {
             try
             {
-                var results = await _temporalDataService.SearchPersonsAtMomentAsync(request, moment);
+                var actualMoment = moment ?? DateTime.Now;
+
+                var results = await _temporalDataService.SearchPersonsAtMomentAsync(request, actualMoment);
 
                 return Ok(new
                 {
-                    Message = $"Поиск выполнен на момент {moment:yyyy-MM-dd HH:mm:ss}",
-                    SnapshotMoment = moment,
+                    Message = $"Поиск выполнен на момент {actualMoment:yyyy-MM-dd HH:mm:ss}",
+                    SnapshotMoment = actualMoment,
                     TotalCount = results.Count,
                     Results = results
                 });
@@ -49,21 +51,6 @@ namespace FIOpipeline.ApiService.Controllers
             {
                 var history = await _temporalDataService.GetPersonHistoryAsync(personId);
                 return Ok(history);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Error = ex.Message });
-            }
-        }
-
-        [HttpGet("system-snapshot")]
-        public async Task<IActionResult> GetSystemSnapshot([FromQuery] DateTime? moment = null)
-        {
-            try
-            {
-                var snapshotMoment = moment ?? DateTime.UtcNow;
-                var snapshot = await _temporalDataService.GetSystemSnapshotAsync(snapshotMoment);
-                return Ok(snapshot);
             }
             catch (Exception ex)
             {

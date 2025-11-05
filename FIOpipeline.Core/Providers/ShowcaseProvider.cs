@@ -1,8 +1,9 @@
 ﻿using FIOpipeline.Core.DataAccess;
+using FIOpipeline.Core.Entity;
 using FIOpipeline.Domain;
 using FIOpipeline.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using FIOpipeline.Core.Entity;
+using System.Linq.Expressions;
 
 namespace FIOpipeline.Core.Providers
 {
@@ -79,13 +80,28 @@ namespace FIOpipeline.Core.Providers
                 for (int i = 1; i < conditions.Count; i++)
                 {
                     var currentCondition = conditions[i];
-                    combinedCondition = Or(combinedCondition, currentCondition);
+                    combinedCondition = And(combinedCondition, currentCondition);
                 }
                 query = query.Where(combinedCondition);
             }
 
+
             return await query.ToListAsync();
         }
+
+        private static Expression<Func<T, bool>> And<T>(
+            Expression<Func<T, bool>> expr1,
+            Expression<Func<T, bool>> expr2)
+        {
+            var parameter = Expression.Parameter(typeof(T));
+
+            var combined = Expression.AndAlso(
+                Expression.Invoke(expr1, parameter),
+                Expression.Invoke(expr2, parameter));
+
+            return Expression.Lambda<Func<T, bool>>(combined, parameter);
+        }
+
 
         private System.Linq.Expressions.Expression<Func<Entity.Person, bool>> Or(
             System.Linq.Expressions.Expression<Func<Entity.Person, bool>> expr1,
